@@ -126,13 +126,15 @@ def transcribe(
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_source)
     feature_extractor = WhisperFeatureExtractor(**WHISPER_FEAT_CFG)
 
-    config = AutoConfig.from_pretrained(checkpoint_dir, trust_remote_code=True)
+    config = AutoConfig.from_pretrained(checkpoint_dir, trust_remote_code=True, device_map="auto")
     model = AutoModelForCausalLM.from_pretrained(
         checkpoint_dir,
         config=config,
+        device_map="auto",
         torch_dtype=torch.bfloat16,
         trust_remote_code=True,
     ).to(device)
+    print(model.hf_device_map)
     model.eval()
 
     batch = build_prompt(
