@@ -134,7 +134,7 @@ def transcribe(
         torch_dtype=torch.bfloat16,
         trust_remote_code=True,
     ).to(device)
-    print(model.hf_device_map)
+    # print(model.hf_device_map)
     model.eval()
 
     batch = build_prompt(
